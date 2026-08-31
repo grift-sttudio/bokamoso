@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bokamoso</title>
+    <link rel="stylesheet" href="./index.css">
+    <link rel="icon" href="assets/logo.jpg">
+    <script src="./dexie.min.js"></script>
+    <script>
+  window.addEventListener('load', () => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./assets/sw.js')
+        .then(() => {
+          console.log('Service worker registered!');
+        })
+        .catch((error) => {
+          console.warn('Service worker registration failed:', error);
+        });
+    }
+  });
+</script>
+<script>
+   
+</script>
+   </head>
+<body>
+     <nav>
+        <p>My list</p>
+     </nav>
+    <div class="container">
+        <form id="itemForm">
+
+            <label for="">
+                Name of item:
+                <input type="text" id="nameInput" required>
+             </label>
+        
+             <label for="">
+                Quantity:
+                <input type="Number" id="quantityInput">
+             </label>
+        
+             <label for="">
+                price:
+                <input type="Number" id="priceInput">
+             </label>
+             <button type="submit" id="addItemButton">
+                Add item to cart 
+             </button>
+        </form>
+     
+    </div>
+    <div id="itemsDiv"></div>
+   <div id="totalPriceDiv"></div>
+     
+   
+     
+    
+    <script src="./index.js"></script>
+</body>
+</html>
