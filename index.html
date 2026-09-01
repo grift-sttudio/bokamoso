@@ -1,62 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bokamoso</title>
-    <link rel="stylesheet" href="./index.css">
-    <link rel="icon" href="assets/logo.jpg">
-    <script src="./dexie.min.js"></script>
-    <script>
-  window.addEventListener('load', () => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./assets/sw.js')
-        .then(() => {
-          console.log('Service worker registered!');
-        })
-        .catch((error) => {
-          console.warn('Service worker registration failed:', error);
-        });
-    }
-  });
-</script>
-<script>
-   
-</script>
-   </head>
-<body>
-     <nav>
-        <p>My list</p>
-     </nav>
-    <div class="container">
-        <form id="itemForm">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bokamoso</title>
+  <link rel="stylesheet" href="index.css">
+</head>
 
-            <label for="">
-                Name of item:
-                <input type="text" id="nameInput" required>
-             </label>
-        
-             <label for="">
-                Quantity:
-                <input type="Number" id="quantityInput">
-             </label>
-        
-             <label for="">
-                price:
-                <input type="Number" id="priceInput">
-             </label>
-             <button type="submit" id="addItemButton">
-                Add item to cart 
-             </button>
-        </form>
-     
-    </div>
-    <div id="itemsDiv"></div>
-   <div id="totalPriceDiv"></div>
-     
-   
-     
-    
-    <script src="./index.js"></script>
+<body>
+
+  <div class="app">
+
+    <header class="topbar">
+      <h1>BOKAMOSO</h1>
+      <p>Learner Progress</p>
+    </header>
+
+    <main class="content">
+
+      <!-- TUTOR / LEARNER INFO -->
+      <section class="info-section">
+
+        <div class="info-grid">
+
+          <div class="info-group">
+            <label for="tutorName">Tutor Name:</label>
+            <input
+              type="text"
+              id="tutorName"
+              placeholder="Tutor name"
+            >
+          </div>
+
+          <div class="info-group">
+            <label for="grade">Grade:</label>
+
+            <select id="grade">
+              <option value="">Select</option>
+              <option value="0">Grade 0</option>
+              <option value="1">Grade 1</option>
+              <option value="2">Grade 2</option>
+              <option value="3">Grade 3</option>
+              <option value="4">Grade 4</option>
+              <option value="5">Grade 5</option>
+              <option value="6">Grade 6</option>
+              <option value="7">Grade 7</option>
+              <option value="8">Grade 8</option>
+              <option value="9">Grade 9</option>
+              <option value="10">Grade 10</option>
+              <option value="11">Grade 11</option>
+            </select>
+          </div>
+
+          <div class="info-group">
+            <label for="date">Date:</label>
+            <input type="date" id="date">
+          </div>
+
+          <div class="info-group">
+            <label for="studentName">Student Name:</label>
+            <input
+              type="text"
+              id="studentName"
+              placeholder="Student name"
+            >
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- PROGRESS -->
+      <section class="progress-section">
+
+        <div class="section-title">
+          <h2>Progress</h2>
+          <p>Click the circle to choose the learner's progress.</p>
+        </div>
+
+
+        <div class="progress-area">
+
+          <button
+            id="progressCircle"
+            class="progress-circle none"
+            type="button"
+            aria-label="Choose learner progress"
+          >
+            <span id="progressText">?</span>
+          </button>
+
+
+          <div
+            id="progressOptions"
+            class="progress-options hidden"
+          >
+
+            <button
+              class="color-option good-option"
+              type="button"
+              data-status="good"
+            >
+              Good
+            </button>
+
+            <button
+              class="color-option average-option"
+              type="button"
+              data-status="average"
+            >
+              Average
+            </button>
+
+            <button
+              class="color-option poor-option"
+              type="button"
+              data-status="poor"
+            >
+              Poor
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- LEGEND -->
+        <div class="legend">
+
+          <div class="legend-item">
+            <span class="legend-circle good"></span>
+            <span>Good</span>
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-circle average"></span>
+            <span>Average</span>
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-circle poor"></span>
+            <span>Poor</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ADD ITEM -->
+      <section class="cart-form-section">
+
+        <h2>Items</h2>
+
+        <div class="form-row">
+
+          <div class="form-group">
+            <label for="itemName">Name of Item:</label>
+
+            <input
+              type="text"
+              id="itemName"
+              placeholder="Item name"
+            >
+          </div>
+
+
+          <div class="form-group">
+            <label for="quantity">Quantity:</label>
+
+            <input
+              type="number"
+              id="quantity"
+              value="1"
+              min="1"
+            >
+          </div>
+
+
+          <div class="form-group">
+            <label for="recordedDate">Date Recorded:</label>
+
+            <input
+              type="date"
+              id="recordedDate"
+            >
+          </div>
+
+        </div>
+
+
+        <button
+          id="addItemBtn"
+          class="add-btn"
+          type="button"
+        >
+          Add item to cart
+        </button>
+
+      </section>
+
+
+      <!-- CART -->
+      <section class="cart-section">
+
+        <div class="cart-header">
+
+          <h2>Cart</h2>
+
+          <span>
+            Items added:
+            <strong id="totalItems">0</strong>
+          </span>
+
+        </div>
+
+
+        <div
+          id="itemsList"
+          class="items-list"
+        ></div>
+
+      </section>
+
+
+      <!-- SAVE -->
+      <div class="action-row">
+
+        <button
+          id="saveBtn"
+          class="save-btn"
+          type="button"
+        >
+          SAVE
+        </button>
+
+        <button
+          id="clearBtn"
+          class="clear-btn"
+          type="button"
+        >
+          CLEAR
+        </button>
+
+      </div>
+
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+    </main>
+
+  </div>
+
+
+  <script src="index.js"></script>
+
 </body>
 </html>
+
