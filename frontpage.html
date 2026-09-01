@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Classlist</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #eaeaea;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .sheet {
+      background: white;
+      width: 100%;
+      max-width: 850px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .header h2 {
+      color: #00805a;
+      font-size: 1.5rem;
+    }
+
+
+    /* CLASS INFORMATION */
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-row label {
+      font-weight: bold;
+      min-width: 95px;
+      text-align: right;
+    }
+
+    .info-row input[type="text"],
+    .info-row select,
+    .info-row input[type="date"] {
+      border: none;
+      border-bottom: 2px solid #333;
+      padding: 5px 8px;
+      font-size: 1rem;
+      background: transparent;
+    }
+
+    #tutorName {
+      width: 200px;
+    }
+
+    #grade {
+      width: 130px;
+      cursor: pointer;
+    }
+
+    #date {
+      width: 160px;
+      cursor: pointer;
+    }
+
+
+    /* ATTENDANCE LEGEND */
+
+    .attendance-legend {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
+
+      margin-bottom: 18px;
+      padding: 10px;
+
+      background: #f0f7f4;
+      border-radius: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .legend-circle {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* WHITE = ABSENT */
+
+    .legend-circle.absent {
+      background: white;
+      border: 2px solid #555;
+    }
+
+    /* GREEN = ON TIME */
+
+    .legend-circle.ontime {
+      background: #00805a;
+      border: 2px solid #00805a;
+    }
+
+    /* ORANGE = LATE */
+
+    .legend-circle.late {
+      background: #f39c12;
+      border: 2px solid #f39c12;
+    }
+
+
+    /* STUDENT TABLE */
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 7px 3px;
+      border-bottom: 1px solid #ddd;
+      vertical-align: middle;
+    }
+
+    .num {
+      font-weight: bold;
+      width: 28px;
+    }
+
+
+    /* ATTENDANCE CIRCLE */
+
+    .circle {
+      width: 32px;
+      text-align: center;
+    }
+
+    .attendance-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #777;
+      background: white;
+      cursor: pointer;
+      display: inline-block;
+      transition: 0.15s;
+      padding: 0;
+    }
+
+
+    /* ABSENT */
+
+    .attendance-circle.absent {
+      background: white;
+      border-color: #555;
+    }
+
+
+    /* ON TIME */
+
+    .attendance-circle.ontime {
+      background: #00805a;
+      border-color: #00805a;
+    }
+
+
+    /* LATE */
+
+    .attendance-circle.late {
+      background: #f39c12;
+      border-color: #f39c12;
+    }
+
+    .attendance-circle:hover {
+      transform: scale(1.12);
+    }
+
+
+    /* STUDENT NAME */
+
+    .name {
+      width: 40%;
+    }
+
+    .name input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #aaa;
+      padding: 4px;
+      font-size: 0.9rem;
+      background: transparent;
+      outline: none;
+    }
+
+    .name input:focus {
+      border-bottom: 2px solid #00805a;
+    }
+
+
+    /* CHECKBOX */
+
+    .check {
+      width: 30px;
+      text-align: center;
+    }
+
+    .check input {
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+      accent-color: #00805a;
+    }
+
+
+    /* SCRATCHED NAME */
+
+    .name.checked input {
+      text-decoration: line-through;
+      color: #777;
+      opacity: 0.7;
+    }
+
+
+    /* SUMMARY */
+
+    .summary {
+      margin-top: 18px;
+      padding: 12px;
+      background: #f0f7f4;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .summary span {
+      font-weight: bold;
+      margin: 0 8px;
+    }
+
+
+    /* BUTTONS */
+
+    .buttons {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .buttons button {
+      background: #00805a;
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .buttons button:hover {
+      background: #006b4a;
+    }
+
+    .buttons button.danger {
+      background: #c62828;
+      margin-left: 10px;
+    }
+
+    .buttons button.danger:hover {
+      background: #a01f1f;
+    }
+
+    .footer {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+
+      .sheet {
+        padding: 12px;
+      }
+
+      td {
+        padding: 6px 2px;
+      }
+
+      .num {
+        width: 24px;
+      }
+
+      .circle {
+        width: 28px;
+      }
+
+      .name {
+        width: auto;
+      }
+
+      .name input {
+        font-size: 0.82rem;
+      }
+
+      .info-row label {
+        min-width: 80px;
+      }
+
+      .attendance-legend {
+        gap: 12px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+<div class="sheet">
+
+  <div class="header">
+    <h2>CLASSLIST</h2>
+  </div>
+
+
+  <!-- CLASS INFORMATION -->
+
+  <div class="info">
+
+    <div class="info-row">
+
+      <label>
+        Tutor Name:
+      </label>
+
+      <input
+        type="text"
+        id="tutorName"
+      >
+
+    </div>
+
+
+    <div class="info-row">
+
+      <label>
+        Grade:
+      </label>
+
+      <select id="grade">
+
+        <option value="">
+          Select
+        </option>
+
+        <option value="0">Grade 0</option>
+        <option value="1">Grade 1</option>
+        <option value="2">Grade 2</option>
+        <option value="3">Grade 3</option>
+        <option value="4">Grade 4</option>
+        <option value="5">Grade 5</option>
+        <option value="6">Grade 6</option>
+        <option value="7">Grade 7</option>
+        <option value="8">Grade 8</option>
+        <option value="9">Grade 9</option>
+        <option value="10">Grade 10</option>
+        <option value="11">Grade 11</option>
+
+      </select>
+
+    </div>
+
+
+    <div class="info-row">
+
+      <label>
+        Date:
+      </label>
+
+      <input
+        type="date"
+        id="date"
+      >
+
+    </div>
+
+  </div>
+
+
+  <!-- ATTENDANCE LEGEND -->
+
+  <div class="attendance-legend">
+
+    <div class="legend-item">
+
+      <span
+        class="legend-circle absent">
+      </span>
+
+      <span>
+        Absent
+      </span>
+
+    </div>
+
+
+    <div class="legend-item">
+
+      <span
+        class="legend-circle ontime">
+      </span>
+
+      <span>
+        On Time
+      </span>
+
+    </div>
+
+
+    <div class="legend-item">
+
+      <span
+        class="legend-circle late">
+      </span>
+
+      <span>
+        Late
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- STUDENTS -->
+
+  <table id="studentTable"></table>
+
+
+  <!-- SUMMARY -->
+
+  <div class="summary">
+
+    Present:
+
+    <span id="presentCount">
+      0
+    </span>
+
+    |
+
+    Checked:
+
+    <span id="checkedCount">
+      0
+    </span>
+
+  </div>
+
+
+  <!-- BUTTONS -->
+
+  <div class="buttons">
+
+    <button
+      type="button"
+      onclick="saveData()"
+    >
+      Save List
+    </button>
+
+
+    <button
+      type="button"
+      class="danger"
+      onclick="clearData()"
+    >
+      Clear All
+    </button>
+
+  </div>
+
+
+  <div class="footer">
+    CLASSLIST
+  </div>
+
+</div>
+
+
+<script>
+
+  const table =
+    document.getElementById(
+      "studentTable"
+    );
+
+  let html = "";
+
+
+  /*
+    ATTENDANCE STATUS
+
+    WHITE  = ABSENT
+    GREEN  = ON TIME
+    ORANGE = LATE
+  */
+
+
+  for (
+    let i = 1;
+    i <= 20;
+    i += 2
+  ) {
+
+    html += `
+
+      <tr>
+
+        <td class="num">
+          ${i}.
+        </td>
+
+        <td class="circle">
+
+          <button
+            type="button"
+            class="attendance-circle absent"
+            data-id="${i}"
+            data-status="absent"
+            onclick="cycleStatus(this)"
+            aria-label="Attendance status">
+          </button>
+
+        </td>
+
+
+        <td
+          class="name"
+          id="nameCell${i}"
+        >
+
+          <input
+            type="text"
+            class="student-name"
+            data-id="${i}"
+            placeholder="Student Name"
+          >
+
+        </td>
+
+
+        <td class="check">
+
+          <input
+            type="checkbox"
+            class="student-check"
+            data-id="${i}"
+            onchange="toggleChecked(this)"
+          >
+
+        </td>
+
+
+
+        <td class="num">
+          ${i + 1}.
+        </td>
+
+
+        <td class="circle">
+
+          <button
+            type="button"
+            class="attendance-circle absent"
+            data-id="${i + 1}"
+            data-status="absent"
+            onclick="cycleStatus(this)"
+            aria-label="Attendance status">
+          </button>
+
+        </td>
+
+
+        <td
+          class="name"
+          id="nameCell${i + 1}"
+        >
+
+          <input
+            type="text"
+            class="student-name"
+            data-id="${i + 1}"
+            placeholder="Student Name"
+          >
+
+        </td>
+
+
+        <td class="check">
+
+          <input
+            type="checkbox"
+            class="student-check"
+            data-id="${i + 1}"
+            onchange="toggleChecked(this)"
+          >
+
+        </td>
+
+      </tr>
+
+    `;
+
+  }
+
+
+  table.innerHTML = html;
+
+
+  /* CYCLE ATTENDANCE STATUS */
+
+  function cycleStatus(circle) {
+
+    const current =
+      circle.dataset.status;
+
+    let next;
+
+
+    if (
+      current === "absent"
+    ) {
+
+      next = "ontime";
+
+    }
+
+    else if (
+      current === "ontime"
+    ) {
+
+      next = "late";
+
+    }
+
+    else {
+
+      next = "absent";
+
+    }
+
+
+    circle.dataset.status =
+      next;
+
+
+    circle.classList.remove(
+      "absent",
+      "ontime",
+      "late"
+    );
+
+
+    circle.classList.add(
+      next
+    );
+
+
+    updateSummary();
+
+  }
+
+
+  /* CHECKBOX = SCRATCH NAME */
+
+  function toggleChecked(
+    checkbox
+  ) {
+
+    const id =
+      checkbox.dataset.id;
+
+
+    const nameCell =
+      document.getElementById(
+        "nameCell" + id
+      );
+
+
+    if (
+      checkbox.checked
+    ) {
+
+      nameCell.classList.add(
+        "checked"
+      );
+
+    }
+
+    else {
+
+      nameCell.classList.remove(
+        "checked"
+      );
+
+    }
+
+
+    updateSummary();
+
+  }
+
+
+  /* SUMMARY */
+
+  function updateSummary() {
+
+    const checked =
+      document.querySelectorAll(
+        ".student-check:checked"
+      ).length;
+
+
+    document.getElementById(
+      "checkedCount"
+    ).textContent =
+      checked;
+
+
+    document.getElementById(
+      "presentCount"
+    ).textContent =
+      checked;
+
+  }
+
+
+  /* SAVE */
+
+  function saveData() {
+
+    const students = [];
+
+
+    document.querySelectorAll(
+      ".student-name"
+    ).forEach(function (input) {
+
+      const id =
+        input.dataset.id;
+
+
+      const checkbox =
+        document.querySelector(
+          '.student-check[data-id="' +
+          id +
+          '"]'
+        );
+
+
+      const circle =
+        document.querySelector(
+          '.attendance-circle[data-id="' +
+          id +
+          '"]'
+        );
+
+
+      students.push({
+
+        id: id,
+
+        name: input.value,
+
+        checked:
+          checkbox.checked,
+
+        status:
+          circle.dataset.status
+
+      });
+
+    });
+
+
+    const data = {
+
+      tutorName:
+        document.getElementById(
+          "tutorName"
+        ).value,
+
+      grade:
+        document.getElementById(
+          "grade"
+        ).value,
+
+      date:
+        document.getElementById(
+          "date"
+        ).value,
+
+      students:
+        students
+
+    };
+
+
+    localStorage.setItem(
+      "classlistData",
+      JSON.stringify(data)
+    );
+
+
+    alert(
+      "Classlist saved successfully!"
+    );
+
+  }
+
+
+  /* LOAD */
+
+  window.onload =
+    function () {
+
+      let data = {};
+
+
+      try {
+
+        data =
+          JSON.parse(
+            localStorage.getItem(
+              "classlistData"
+            ) || "{}"
+          );
+
+      }
+
+      catch (error) {
+
+        data = {};
+
+      }
+
+
+      if (
+        data.tutorName
+      ) {
+
+        document.getElementById(
+          "tutorName"
+        ).value =
+          data.tutorName;
+
+      }
+
+
+      if (
+        data.grade
+      ) {
+
+        document.getElementById(
+          "grade"
+        ).value =
+          data.grade;
+
+      }
+
+
+      if (
+        data.date
+      ) {
+
+        document.getElementById(
+          "date"
+        ).value =
+          data.date;
+
+      }
+
+
+      if (
+        Array.isArray(
+          data.students
+        )
+      ) {
+
+        data.students.forEach(
+          function (student) {
+
+
+            const nameInput =
+              document.querySelector(
+                '.student-name[data-id="' +
+                student.id +
+                '"]'
+              );
+
+
+            const checkbox =
+              document.querySelector(
+                '.student-check[data-id="' +
+                student.id +
+                '"]'
+              );
+
+
+            const circle =
+              document.querySelector(
+                '.attendance-circle[data-id="' +
+                student.id +
+                '"]'
+              );
+
+
+            if (
+              nameInput
+            ) {
+
+              nameInput.value =
+                student.name || "";
+
+            }
+
+
+            if (
+              checkbox
+            ) {
+
+              checkbox.checked =
+                Boolean(
+                  student.checked
+                );
+
+
+              toggleChecked(
+                checkbox
+              );
+
+            }
+
+
+            if (
+              circle
+            ) {
+
+              const status =
+                student.status ||
+                "absent";
+
+
+              circle.dataset.status =
+                status;
+
+
+              circle.classList.remove(
+                "absent",
+                "ontime",
+                "late"
+              );
+
+
+              circle.classList.add(
+                status
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+
+      updateSummary();
+
+    };
+
+
+  /* CLEAR */
+
+  function clearData() {
+
+    if (
+      confirm(
+        "Are you sure you want to clear the whole list?"
+      )
+    ) {
+
+      localStorage.removeItem(
+        "classlistData"
+      );
+
+
+      location.reload();
+
+    }
+
+  }
+
+</script>
+
+</body>
+</html>
