@@ -2,10 +2,34 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  const STORAGE_KEY = "bokamosoData";
+  /*
+    GET THE LEARNER NUMBER FROM THE URL.
 
+    Example:
+    index.html?learner=1
+    index.html?learner=2
+  */
 
-  /* TOP INFORMATION */
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const learnerId =
+    params.get("learner") || "default";
+
+  /*
+    EVERY LEARNER NOW GETS
+    THEIR OWN STORAGE.
+
+    Example:
+    bokamosoLearner_1
+    bokamosoLearner_2
+  */
+
+  const STORAGE_KEY =
+    "bokamosoLearner_" + learnerId;
+
 
   const tutorName =
     document.getElementById("tutorName");
@@ -20,8 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("studentName");
 
 
-  /* PROGRESS */
-
   const progressCircle =
     document.getElementById("progressCircle");
 
@@ -35,8 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".color-option");
 
 
-  /* CART FORM */
-
   const itemName =
     document.getElementById("itemName");
 
@@ -47,8 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("recordedDate");
 
 
-  /* BUTTONS */
-
   const addItemBtn =
     document.getElementById("addItemBtn");
 
@@ -58,8 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const clearBtn =
     document.getElementById("clearBtn");
 
-
-  /* CART */
 
   const itemsList =
     document.getElementById("itemsList");
@@ -76,14 +92,86 @@ document.addEventListener("DOMContentLoaded", function () {
   let items = [];
 
 
-  /* =========================
-     PROGRESS
-  ========================= */
+  /*
+    LOAD LEARNER INFORMATION
+    FROM THE CLASSLIST
+  */
 
+  function loadClasslistLearner() {
+
+    if (learnerId === "default") {
+      return;
+    }
+
+    let classData = {};
+
+    try {
+
+      classData =
+        JSON.parse(
+          localStorage.getItem(
+            "classlistData"
+          ) || "{}"
+        );
+
+    }
+    catch (error) {
+
+      classData = {};
+
+    }
+
+
+    if (classData.tutorName) {
+      tutorName.value =
+        classData.tutorName;
+    }
+
+
+    if (classData.grade) {
+      grade.value =
+        classData.grade;
+    }
+
+
+    if (
+      Array.isArray(
+        classData.students
+      )
+    ) {
+
+      const learner =
+        classData.students.find(
+          function (student) {
+            return String(student.id) ===
+              String(learnerId);
+          }
+        );
+
+
+      if (
+        learner &&
+        learner.name
+      ) {
+
+        studentName.value =
+          learner.name;
+
+      }
+
+    }
+
+  }
+
+
+  /*
+    PROGRESS
+  */
 
   function applyProgress(status) {
 
     progressStatus = status;
+
 
     progressCircle.classList.remove(
       "none",
@@ -92,31 +180,46 @@ document.addEventListener("DOMContentLoaded", function () {
       "poor"
     );
 
-    progressCircle.classList.add(status);
+
+    progressCircle.classList.add(
+      status
+    );
 
 
     if (status === "good") {
 
-      progressText.textContent = "GOOD";
+      progressText.textContent =
+        "GOOD";
 
-    } else if (status === "average") {
+    }
 
-      progressText.textContent = "AVG";
+    else if (
+      status === "average"
+    ) {
 
-    } else if (status === "poor") {
+      progressText.textContent =
+        "AVG";
 
-      progressText.textContent = "POOR";
+    }
 
-    } else {
+    else if (
+      status === "poor"
+    ) {
 
-      progressText.textContent = "?";
+      progressText.textContent =
+        "POOR";
+
+    }
+
+    else {
+
+      progressText.textContent =
+        "?";
 
     }
 
   }
 
-
-  /* CLICK MAIN CIRCLE */
 
   progressCircle.addEventListener(
     "click",
@@ -130,37 +233,34 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
 
-  /* CHOOSE COLOR */
+  colorOptions.forEach(
+    function (option) {
 
-  colorOptions.forEach(function (option) {
+      option.addEventListener(
+        "click",
+        function () {
 
-    option.addEventListener(
-      "click",
-      function () {
+          const status =
+            option.getAttribute(
+              "data-status"
+            );
 
-        const status =
-          option.getAttribute(
-            "data-status"
+          applyProgress(status);
+
+          progressOptions.classList.add(
+            "hidden"
           );
 
-        applyProgress(status);
+        }
+      );
 
-        progressOptions.classList.add(
-          "hidden"
-        );
-
-        saveSilently();
-
-      }
-    );
-
-  });
+    }
+  );
 
 
-  /* =========================
-     CART
-  ========================= */
-
+  /*
+    CART
+  */
 
   function renderItems() {
 
@@ -173,7 +273,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const row =
           document.createElement("div");
 
-        row.className = "item-row";
+        row.className =
+          "item-row";
 
 
         if (item.purchased) {
@@ -185,18 +286,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* CHECKBOX */
-
         const checkbox =
-          document.createElement("input");
+          document.createElement(
+            "input"
+          );
 
-        checkbox.type = "checkbox";
+        checkbox.type =
+          "checkbox";
 
         checkbox.className =
           "item-check";
 
         checkbox.checked =
-          Boolean(item.purchased);
+          item.purchased;
 
 
         checkbox.addEventListener(
@@ -214,49 +316,50 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* ITEM INFO */
-
         const info =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
-        info.className = "item-info";
+        info.className =
+          "item-info";
 
 
-        const title =
-          document.createElement("strong");
+        const itemTitle =
+          document.createElement(
+            "strong"
+          );
 
-        title.className = "item-name";
+        itemTitle.className =
+          "item-name";
 
-        title.textContent =
+        itemTitle.textContent =
           item.name;
 
 
         const details =
-          document.createElement("small");
+          document.createElement(
+            "small"
+          );
 
 
-        let text =
-          "Qty: " + item.quantity;
+        let detailsText =
+          "Qty: " +
+          item.quantity;
 
 
         if (item.recordedDate) {
 
-          text +=
+          detailsText +=
             " | Recorded: " +
             item.recordedDate;
 
         }
 
 
-        details.textContent = text;
+        details.textContent =
+          detailsText;
 
-
-        info.appendChild(title);
-
-        info.appendChild(details);
-
-
-        /* DELETE BUTTON */
 
         const deleteButton =
           document.createElement(
@@ -290,6 +393,15 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
+        info.appendChild(
+          itemTitle
+        );
+
+        info.appendChild(
+          details
+        );
+
+
         row.appendChild(
           checkbox
         );
@@ -317,7 +429,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ADD ITEM */
+  /*
+    ADD ITEM
+  */
 
   function addItem() {
 
@@ -326,7 +440,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     let quantityValue =
-      Number(quantity.value);
+      Number(
+        quantity.value
+      );
 
 
     const recordedDateValue =
@@ -360,14 +476,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     items.push({
 
-      name: nameValue,
+      name:
+        nameValue,
 
-      quantity: quantityValue,
+      quantity:
+        quantityValue,
 
       recordedDate:
         recordedDateValue,
 
-      purchased: false
+      purchased:
+        false
 
     });
 
@@ -377,7 +496,6 @@ document.addEventListener("DOMContentLoaded", function () {
     quantity.value = "1";
 
     recordedDate.value = "";
-
 
     itemName.focus();
 
@@ -389,14 +507,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* =========================
-     SAVE DATA
-  ========================= */
-
+  /*
+    GET CURRENT LEARNER DATA
+  */
 
   function getData() {
 
     return {
+
+      learnerId:
+        learnerId,
 
       tutorName:
         tutorName.value,
@@ -421,6 +541,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
+  /*
+    SAVE THIS LEARNER ONLY
+  */
+
   function saveSilently() {
 
     localStorage.setItem(
@@ -441,16 +565,17 @@ document.addEventListener("DOMContentLoaded", function () {
     saveSilently();
 
     showMessage(
-      "Saved successfully."
+      "Learner " +
+      learnerId +
+      " saved successfully."
     );
 
   }
 
 
-  /* =========================
-     LOAD DATA
-  ========================= */
-
+  /*
+    LOAD THIS LEARNER ONLY
+  */
 
   function loadAll() {
 
@@ -461,16 +586,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
       data =
         JSON.parse(
-
           localStorage.getItem(
             STORAGE_KEY
           ) || "{}"
-
         );
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
       data = {};
+
+    }
+
+
+    /*
+      IF THIS LEARNER HAS
+      NEVER BEEN SAVED BEFORE,
+      GET THEIR NAME/GRADE/TUTOR
+      FROM THE CLASSLIST.
+    */
+
+    if (
+      Object.keys(data).length === 0
+    ) {
+
+      loadClasslistLearner();
+
+      applyProgress(
+        "none"
+      );
+
+      items = [];
+
+      renderItems();
+
+      return;
 
     }
 
@@ -501,7 +652,9 @@ document.addEventListener("DOMContentLoaded", function () {
         data.progress
       );
 
-    } else {
+    }
+
+    else {
 
       applyProgress(
         "none"
@@ -519,7 +672,9 @@ document.addEventListener("DOMContentLoaded", function () {
       items =
         data.items;
 
-    } else {
+    }
+
+    else {
 
       items = [];
 
@@ -531,16 +686,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* =========================
-     CLEAR
-  ========================= */
-
+  /*
+    CLEAR ONLY THIS LEARNER
+  */
 
   function clearAll() {
 
     const confirmed =
       window.confirm(
-        "Are you sure you want to clear everything?"
+        "Clear this learner's progress and items?"
       );
 
 
@@ -574,25 +728,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     items = [];
 
-
     applyProgress(
       "none"
     );
 
-
     renderItems();
 
 
+    /*
+      PUT THEIR CLASSLIST
+      INFORMATION BACK AFTER
+      CLEARING PROGRESS.
+    */
+
+    loadClasslistLearner();
+
+
     showMessage(
-      "Cleared."
+      "Learner cleared."
     );
 
   }
-
-
-  /* =========================
-     MESSAGE
-  ========================= */
 
 
   function showMessage(text) {
@@ -610,18 +766,14 @@ document.addEventListener("DOMContentLoaded", function () {
       window.setTimeout(
         function () {
 
-          message.textContent = "";
+          message.textContent =
+            "";
 
         },
         2200
       );
 
   }
-
-
-  /* =========================
-     EVENTS
-  ========================= */
 
 
   addItemBtn.addEventListener(
@@ -642,8 +794,6 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
 
-  /* PRESS ENTER TO ADD ITEM */
-
   itemName.addEventListener(
     "keydown",
     function (event) {
@@ -661,8 +811,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   );
 
-
-  /* START */
 
   loadAll();
 

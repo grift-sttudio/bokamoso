@@ -430,3 +430,22 @@ body {
   }
 
 }
+.page-nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.page-nav a {
+  text-decoration: none;
+  background: #00805a;
+  color: white;
+  padding: 9px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.page-nav a:hover {
+  background: #006b4a;
+}

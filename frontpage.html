@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Classlist</title>
 
   <style>
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -41,6 +39,25 @@
       font-size: 1.5rem;
     }
 
+    .page-nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .page-nav a {
+      text-decoration: none;
+      background: #00805a;
+      color: white;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .page-nav a:hover {
+      background: #006b4a;
+    }
 
     /* CLASS INFORMATION */
 
@@ -49,7 +66,7 @@
       flex-direction: column;
       gap: 9px;
       align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .info-row {
@@ -88,7 +105,6 @@
       cursor: pointer;
     }
 
-
     /* ATTENDANCE LEGEND */
 
     .attendance-legend {
@@ -97,10 +113,8 @@
       align-items: center;
       gap: 22px;
       flex-wrap: wrap;
-
       margin-bottom: 18px;
       padding: 10px;
-
       background: #f0f7f4;
       border-radius: 8px;
     }
@@ -109,7 +123,6 @@
       display: flex;
       align-items: center;
       gap: 7px;
-
       font-size: 0.9rem;
       font-weight: bold;
     }
@@ -121,27 +134,20 @@
       display: inline-block;
     }
 
-    /* WHITE = ABSENT */
-
     .legend-circle.absent {
       background: white;
       border: 2px solid #555;
     }
-
-    /* GREEN = ON TIME */
 
     .legend-circle.ontime {
       background: #00805a;
       border: 2px solid #00805a;
     }
 
-    /* ORANGE = LATE */
-
     .legend-circle.late {
       background: #f39c12;
       border: 2px solid #f39c12;
     }
-
 
     /* STUDENT TABLE */
 
@@ -161,8 +167,7 @@
       width: 28px;
     }
 
-
-    /* ATTENDANCE CIRCLE */
+    /* ATTENDANCE */
 
     .circle {
       width: 32px;
@@ -172,33 +177,24 @@
     .attendance-circle {
       width: 20px;
       height: 20px;
+      padding: 0;
       border-radius: 50%;
       border: 2px solid #777;
       background: white;
       cursor: pointer;
       display: inline-block;
       transition: 0.15s;
-      padding: 0;
     }
-
-
-    /* ABSENT */
 
     .attendance-circle.absent {
       background: white;
       border-color: #555;
     }
 
-
-    /* ON TIME */
-
     .attendance-circle.ontime {
       background: #00805a;
       border-color: #00805a;
     }
-
-
-    /* LATE */
 
     .attendance-circle.late {
       background: #f39c12;
@@ -208,7 +204,6 @@
     .attendance-circle:hover {
       transform: scale(1.12);
     }
-
 
     /* STUDENT NAME */
 
@@ -230,6 +225,20 @@
       border-bottom: 2px solid #00805a;
     }
 
+    /* PROGRESS LINK */
+
+    .progress-link {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 0.75rem;
+      color: #00805a;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .progress-link:hover {
+      text-decoration: underline;
+    }
 
     /* CHECKBOX */
 
@@ -245,15 +254,11 @@
       accent-color: #00805a;
     }
 
-
-    /* SCRATCHED NAME */
-
     .name.checked input {
       text-decoration: line-through;
       color: #777;
       opacity: 0.7;
     }
-
 
     /* SUMMARY */
 
@@ -270,7 +275,6 @@
       font-weight: bold;
       margin: 0 8px;
     }
-
 
     /* BUTTONS */
 
@@ -309,11 +313,7 @@
       letter-spacing: 1px;
     }
 
-
-    /* MOBILE */
-
     @media (max-width: 650px) {
-
       .sheet {
         padding: 12px;
       }
@@ -342,15 +342,12 @@
         min-width: 80px;
       }
 
-      .attendance-legend {
-        gap: 12px;
+      .progress-link {
+        font-size: 0.7rem;
       }
-
     }
-
   </style>
 </head>
-
 
 <body>
 
@@ -360,37 +357,23 @@
     <h2>CLASSLIST</h2>
   </div>
 
-
-  <!-- CLASS INFORMATION -->
+  <div class="page-nav">
+    <a href="index.html">Learner Progress</a>
+    <a href="frontpage.html">Classlist</a>
+  </div>
 
   <div class="info">
 
     <div class="info-row">
-
-      <label>
-        Tutor Name:
-      </label>
-
-      <input
-        type="text"
-        id="tutorName"
-      >
-
+      <label>Tutor Name:</label>
+      <input type="text" id="tutorName">
     </div>
 
-
     <div class="info-row">
-
-      <label>
-        Grade:
-      </label>
+      <label>Grade:</label>
 
       <select id="grade">
-
-        <option value="">
-          Select
-        </option>
-
+        <option value="">Select</option>
         <option value="0">Grade 0</option>
         <option value="1">Grade 1</option>
         <option value="2">Grade 2</option>
@@ -403,121 +386,46 @@
         <option value="9">Grade 9</option>
         <option value="10">Grade 10</option>
         <option value="11">Grade 11</option>
-
       </select>
-
     </div>
 
-
     <div class="info-row">
-
-      <label>
-        Date:
-      </label>
-
-      <input
-        type="date"
-        id="date"
-      >
-
+      <label>Date:</label>
+      <input type="date" id="date">
     </div>
 
   </div>
-
-
-  <!-- ATTENDANCE LEGEND -->
 
   <div class="attendance-legend">
 
     <div class="legend-item">
-
-      <span
-        class="legend-circle absent">
-      </span>
-
-      <span>
-        Absent
-      </span>
-
+      <span class="legend-circle absent"></span>
+      <span>Absent</span>
     </div>
 
-
     <div class="legend-item">
-
-      <span
-        class="legend-circle ontime">
-      </span>
-
-      <span>
-        On Time
-      </span>
-
+      <span class="legend-circle ontime"></span>
+      <span>On Time</span>
     </div>
 
-
     <div class="legend-item">
-
-      <span
-        class="legend-circle late">
-      </span>
-
-      <span>
-        Late
-      </span>
-
+      <span class="legend-circle late"></span>
+      <span>Late</span>
     </div>
 
   </div>
-
-
-  <!-- STUDENTS -->
 
   <table id="studentTable"></table>
 
-
-  <!-- SUMMARY -->
-
   <div class="summary">
-
-    Present:
-
-    <span id="presentCount">
-      0
-    </span>
-
-    |
-
-    Checked:
-
-    <span id="checkedCount">
-      0
-    </span>
-
+    Present: <span id="presentCount">0</span> |
+    Checked: <span id="checkedCount">0</span>
   </div>
-
-
-  <!-- BUTTONS -->
 
   <div class="buttons">
-
-    <button
-      type="button"
-      onclick="saveData()"
-    >
-      Save List
-    </button>
-
-
-    <button
-      type="button"
-      class="danger"
-      onclick="clearData()"
-    >
-      Clear All
-    </button>
-
+    <button onclick="saveData()">Save List</button>
+    <button class="danger" onclick="clearData()">Clear All</button>
   </div>
-
 
   <div class="footer">
     CLASSLIST
@@ -525,173 +433,116 @@
 
 </div>
 
-
 <script>
 
-  const table =
-    document.getElementById(
-      "studentTable"
-    );
+  const table = document.getElementById("studentTable");
 
   let html = "";
 
-
-  /*
-    ATTENDANCE STATUS
-
-    WHITE  = ABSENT
-    GREEN  = ON TIME
-    ORANGE = LATE
-  */
-
-
-  for (
-    let i = 1;
-    i <= 20;
-    i += 2
-  ) {
+  for (let i = 1; i <= 20; i += 2) {
 
     html += `
-
       <tr>
 
-        <td class="num">
-          ${i}.
-        </td>
+        <td class="num">${i}.</td>
 
         <td class="circle">
-
           <button
             type="button"
             class="attendance-circle absent"
             data-id="${i}"
             data-status="absent"
-            onclick="cycleStatus(this)"
-            aria-label="Attendance status">
+            onclick="cycleStatus(this)">
           </button>
-
         </td>
 
-
-        <td
-          class="name"
-          id="nameCell${i}"
-        >
+        <td class="name" id="nameCell${i}">
 
           <input
             type="text"
             class="student-name"
             data-id="${i}"
-            placeholder="Student Name"
-          >
+            placeholder="Student Name">
+
+          <a
+            href="index.html?learner=${i}"
+            target="_blank"
+            class="progress-link">
+            Progress
+          </a>
 
         </td>
 
-
         <td class="check">
-
           <input
             type="checkbox"
             class="student-check"
             data-id="${i}"
-            onchange="toggleChecked(this)"
-          >
-
+            onchange="toggleChecked(this)">
         </td>
 
 
-
-        <td class="num">
-          ${i + 1}.
-        </td>
-
+        <td class="num">${i + 1}.</td>
 
         <td class="circle">
-
           <button
             type="button"
             class="attendance-circle absent"
             data-id="${i + 1}"
             data-status="absent"
-            onclick="cycleStatus(this)"
-            aria-label="Attendance status">
+            onclick="cycleStatus(this)">
           </button>
-
         </td>
 
-
-        <td
-          class="name"
-          id="nameCell${i + 1}"
-        >
+        <td class="name" id="nameCell${i + 1}">
 
           <input
             type="text"
             class="student-name"
             data-id="${i + 1}"
-            placeholder="Student Name"
-          >
+            placeholder="Student Name">
+
+          <a
+            href="index.html?learner=${i + 1}"
+            target="_blank"
+            class="progress-link">
+            Progress
+          </a>
 
         </td>
 
-
         <td class="check">
-
           <input
             type="checkbox"
             class="student-check"
             data-id="${i + 1}"
-            onchange="toggleChecked(this)"
-          >
-
+            onchange="toggleChecked(this)">
         </td>
 
       </tr>
-
     `;
-
   }
-
 
   table.innerHTML = html;
 
 
-  /* CYCLE ATTENDANCE STATUS */
-
   function cycleStatus(circle) {
 
-    const current =
-      circle.dataset.status;
+    const current = circle.dataset.status;
 
     let next;
 
-
-    if (
-      current === "absent"
-    ) {
-
+    if (current === "absent") {
       next = "ontime";
-
     }
-
-    else if (
-      current === "ontime"
-    ) {
-
+    else if (current === "ontime") {
       next = "late";
-
     }
-
     else {
-
       next = "absent";
-
     }
 
-
-    circle.dataset.status =
-      next;
-
+    circle.dataset.status = next;
 
     circle.classList.remove(
       "absent",
@@ -699,126 +550,87 @@
       "late"
     );
 
-
-    circle.classList.add(
-      next
-    );
-
+    circle.classList.add(next);
 
     updateSummary();
-
   }
 
 
-  /* CHECKBOX = SCRATCH NAME */
+  function toggleChecked(checkbox) {
 
-  function toggleChecked(
-    checkbox
-  ) {
-
-    const id =
-      checkbox.dataset.id;
-
+    const id = checkbox.dataset.id;
 
     const nameCell =
-      document.getElementById(
-        "nameCell" + id
-      );
+      document.getElementById("nameCell" + id);
 
-
-    if (
-      checkbox.checked
-    ) {
-
-      nameCell.classList.add(
-        "checked"
-      );
-
+    if (checkbox.checked) {
+      nameCell.classList.add("checked");
     }
-
     else {
-
-      nameCell.classList.remove(
-        "checked"
-      );
-
+      nameCell.classList.remove("checked");
     }
-
 
     updateSummary();
-
   }
 
 
-  /* SUMMARY */
-
   function updateSummary() {
+
+    const circles =
+      document.querySelectorAll(".attendance-circle");
+
+    let present = 0;
+
+    circles.forEach(circle => {
+      if (
+        circle.dataset.status === "ontime" ||
+        circle.dataset.status === "late"
+      ) {
+        present++;
+      }
+    });
 
     const checked =
       document.querySelectorAll(
         ".student-check:checked"
       ).length;
 
+    document.getElementById(
+      "presentCount"
+    ).textContent = present;
 
     document.getElementById(
       "checkedCount"
-    ).textContent =
-      checked;
-
-
-    document.getElementById(
-      "presentCount"
-    ).textContent =
-      checked;
-
+    ).textContent = checked;
   }
 
-
-  /* SAVE */
 
   function saveData() {
 
     const students = [];
 
-
     document.querySelectorAll(
       ".student-name"
-    ).forEach(function (input) {
+    ).forEach(input => {
 
-      const id =
-        input.dataset.id;
-
+      const id = input.dataset.id;
 
       const checkbox =
         document.querySelector(
-          '.student-check[data-id="' +
-          id +
-          '"]'
+          `.student-check[data-id="${id}"]`
         );
-
 
       const circle =
         document.querySelector(
-          '.attendance-circle[data-id="' +
-          id +
-          '"]'
+          `.attendance-circle[data-id="${id}"]`
         );
 
-
       students.push({
-
         id: id,
-
         name: input.value,
-
-        checked:
-          checkbox.checked,
-
-        status:
-          circle.dataset.status
-
+        checked: checkbox.checked,
+        status: circle.dataset.status
       });
-
     });
 
 
@@ -839,9 +651,7 @@
           "date"
         ).value,
 
-      students:
-        students
-
+      students: students
     };
 
 
@@ -850,175 +660,97 @@
       JSON.stringify(data)
     );
 
-
-    alert(
-      "Classlist saved successfully!"
-    );
-
+    alert("Classlist saved successfully!");
   }
 
 
-  /* LOAD */
+  window.onload = function() {
 
-  window.onload =
-    function () {
+    const data =
+      JSON.parse(
+        localStorage.getItem(
+          "classlistData"
+        ) || "{}"
+      );
 
-      let data = {};
+
+    if (data.tutorName) {
+      document.getElementById(
+        "tutorName"
+      ).value = data.tutorName;
+    }
 
 
-      try {
+    if (data.grade) {
+      document.getElementById(
+        "grade"
+      ).value = data.grade;
+    }
 
-        data =
-          JSON.parse(
-            localStorage.getItem(
-              "classlistData"
-            ) || "{}"
+
+    if (data.date) {
+      document.getElementById(
+        "date"
+      ).value = data.date;
+    }
+
+
+    if (data.students) {
+
+      data.students.forEach(student => {
+
+        const nameInput =
+          document.querySelector(
+            `.student-name[data-id="${student.id}"]`
           );
 
-      }
+        const checkbox =
+          document.querySelector(
+            `.student-check[data-id="${student.id}"]`
+          );
 
-      catch (error) {
-
-        data = {};
-
-      }
-
-
-      if (
-        data.tutorName
-      ) {
-
-        document.getElementById(
-          "tutorName"
-        ).value =
-          data.tutorName;
-
-      }
+        const circle =
+          document.querySelector(
+            `.attendance-circle[data-id="${student.id}"]`
+          );
 
 
-      if (
-        data.grade
-      ) {
-
-        document.getElementById(
-          "grade"
-        ).value =
-          data.grade;
-
-      }
+        if (nameInput) {
+          nameInput.value =
+            student.name || "";
+        }
 
 
-      if (
-        data.date
-      ) {
+        if (checkbox) {
+          checkbox.checked =
+            student.checked || false;
 
-        document.getElementById(
-          "date"
-        ).value =
-          data.date;
-
-      }
+          toggleChecked(checkbox);
+        }
 
 
-      if (
-        Array.isArray(
-          data.students
-        )
-      ) {
+        if (circle) {
 
-        data.students.forEach(
-          function (student) {
+          const status =
+            student.status || "absent";
 
+          circle.dataset.status = status;
 
-            const nameInput =
-              document.querySelector(
-                '.student-name[data-id="' +
-                student.id +
-                '"]'
-              );
+          circle.classList.remove(
+            "absent",
+            "ontime",
+            "late"
+          );
 
+          circle.classList.add(status);
+        }
 
-            const checkbox =
-              document.querySelector(
-                '.student-check[data-id="' +
-                student.id +
-                '"]'
-              );
+      });
+    }
 
+    updateSummary();
+  };
 
-            const circle =
-              document.querySelector(
-                '.attendance-circle[data-id="' +
-                student.id +
-                '"]'
-              );
-
-
-            if (
-              nameInput
-            ) {
-
-              nameInput.value =
-                student.name || "";
-
-            }
-
-
-            if (
-              checkbox
-            ) {
-
-              checkbox.checked =
-                Boolean(
-                  student.checked
-                );
-
-
-              toggleChecked(
-                checkbox
-              );
-
-            }
-
-
-            if (
-              circle
-            ) {
-
-              const status =
-                student.status ||
-                "absent";
-
-
-              circle.dataset.status =
-                status;
-
-
-              circle.classList.remove(
-                "absent",
-                "ontime",
-                "late"
-              );
-
-
-              circle.classList.add(
-                status
-              );
-
-            }
-
-          }
-        );
-
-      }
-
-
-      updateSummary();
-
-    };
-
-
-  /* CLEAR */
 
   function clearData() {
 
@@ -1032,11 +764,8 @@
         "classlistData"
       );
 
-
       location.reload();
-
     }
-
   }
 
 </script>
